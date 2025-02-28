@@ -1,0 +1,35 @@
+// 2. Medium Level: Filtering and Sorting Students using Streams
+
+import java.util.*;
+import java.util.stream.*;
+
+class Student {
+    String name;
+    int marks;
+
+    public Student(String name, int marks) {
+        this.name = name;
+        this.marks = marks;
+    }
+
+    @Override
+    public String toString() {
+        return name + " - Marks: " + marks;
+    }
+}
+
+public class Filtering {
+    public static void main(String[] args) {
+        List<Student> students = Arrays.asList(
+            new Student("John", 80),
+            new Student("Jane", 60),
+            new Student("Tom", 90)
+        );
+
+        System.out.println("Students scoring above 75% sorted by marks:");
+        students.stream()
+                .filter(s -> s.marks > 75)
+                .sorted((s1, s2) -> Integer.compare(s2.marks, s1.marks))
+                .forEach(System.out::println);
+    }
+}
