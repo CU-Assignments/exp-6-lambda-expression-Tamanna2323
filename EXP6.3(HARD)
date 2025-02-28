@@ -1,0 +1,53 @@
+// 3. Hard Level: Processing Products using Streams
+
+import java.util.*;
+import java.util.stream.*;
+
+class Product {
+    String category;
+    String name;
+    double price;
+
+    public Product(String category, String name, double price) {
+        this.category = category;
+        this.name = name;
+        this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return category + " - " + name + ": $" + price;
+    }
+}
+
+public class HardLevel {
+    public static void main(String[] args) {
+        List<Product> products = Arrays.asList(
+            new Product("Electronics", "TV", 300),
+            new Product("Electronics", "Laptop", 800),
+            new Product("Clothing", "Shirt", 50),
+            new Product("Clothing", "Jacket", 120)
+        );
+
+        System.out.println("Products grouped by category:");
+        products.stream()
+                .collect(Collectors.groupingBy(p -> p.category))
+                .forEach((category, productList) -> {
+                    System.out.println(category + ":");
+                    productList.forEach(System.out::println);
+                });
+
+        System.out.println("\nMost expensive product in each category:");
+        products.stream()
+                .collect(Collectors.groupingBy(p -> p.category, 
+                        Collectors.maxBy(Comparator.comparingDouble(p -> p.price))))
+                .forEach((category, product) -> 
+                    System.out.println(category + ": " + product.orElse(null)));
+
+        double averagePrice = products.stream()
+                                      .mapToDouble(p -> p.price)
+                                      .average()
+                                      .orElse(0.0);
+        System.out.println("\nAverage price of all products: $" + averagePrice);
+    }
+}
